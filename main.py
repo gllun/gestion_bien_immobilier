@@ -42,6 +42,16 @@ class Page(tk.Frame):
     def show(self):
         self.lift()
 
+    def character_limit(self, inp, limit):
+        if inp == '' or (len(inp) <= limit and inp.isdigit()):
+            return True
+        return False
+
+    def character_limit_str(self, inp_str, limit):
+        if inp_str == '' or len(inp_str) <= limit:
+            return True
+        return False
+
 # Page creation inheriting page class
 class PageResearch(Page):
     def __init__(self, *args, **kwargs):
@@ -79,75 +89,69 @@ class PageResearch(Page):
         self.e_search.insert(0, self.tdefault_e_search)
         self.e_search.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_search, 'e_search'))
         self.e_search.bind("<FocusIn>", lambda event: self.click_allentry(self.e_search))
-        self.e_search.configure(fg="gray")
+        self.e_search.configure(fg="gray", validate='key', validatecommand=(self.e_search.register(lambda inp_str: self.character_limit_str(inp_str, 40)), "%P"))
 
         self.e_areamin = tk.Entry(self, bd=5)
         self.e_areamin.grid(row=5, column=0)
         self.e_areamin.insert(0, self.tdefault_e_areamin)
         self.e_areamin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_areamin, 'e_areamin'))
         self.e_areamin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_areamin))
-        self.e_areamin.configure(fg="gray")
+        self.e_areamin.configure(fg="gray", validate='key', validatecommand=(self.e_areamin.register(lambda inp: self.character_limit(inp, 5)), "%P"))
 
         self.e_areamax = tk.Entry(self, bd=5)
         self.e_areamax.grid(row=6, column=0)
         self.e_areamax.insert(0, self.tdefault_e_areamax)
         self.e_areamax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_areamax, 'e_areamax'))
         self.e_areamax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_areamax))
-        self.e_areamax.configure(fg="gray")
+        self.e_areamax.configure(fg="gray", validate='key', validatecommand=(self.e_areamax.register(lambda inp: self.character_limit(inp, 5)), "%P"))
 
         self.e_nbpiecemin = tk.Entry(self, bd=5)
         self.e_nbpiecemin.grid(row=7, column=0)
         self.e_nbpiecemin.insert(0, self.tdefault_e_nbpiecemin)
         self.e_nbpiecemin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_nbpiecemin, 'e_nbpiecemin'))
         self.e_nbpiecemin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_nbpiecemin))
-        self.e_nbpiecemin.configure(fg="gray")
+        self.e_nbpiecemin.configure(fg="gray", validate='key', validatecommand=(self.e_nbpiecemin.register(lambda inp: self.character_limit(inp, 3)), "%P"))
 
         self.e_nbpiecemax = tk.Entry(self, bd=5)
         self.e_nbpiecemax.grid(row=8, column=0)
         self.e_nbpiecemax.insert(0, self.tdefault_e_nbpiecemax)
         self.e_nbpiecemax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_nbpiecemax, 'e_nbpiecemax'))
         self.e_nbpiecemax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_nbpiecemax))
-        self.e_nbpiecemax.configure(fg="gray")
+        self.e_nbpiecemax.configure(fg="gray", validate='key', validatecommand=(self.e_nbpiecemax.register(lambda inp: self.character_limit(inp, 3)), "%P"))
 
         self.e_yconstructionmin = tk.Entry(self, bd=5)
         self.e_yconstructionmin.grid(row=9, column=0)
         self.e_yconstructionmin.insert(0, self.tdefault_e_yconstructionmin)
         self.e_yconstructionmin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_yconstructionmin, 'e_yconstructionmin'))
         self.e_yconstructionmin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_yconstructionmin))
-        self.e_yconstructionmin.configure(fg="gray")
+        self.e_yconstructionmin.configure(fg="gray", validate='key', validatecommand=(self.e_yconstructionmin.register(lambda inp: self.character_limit(inp, 4)), "%P"))
 
         self.e_yconstructionmax = tk.Entry(self, bd=5)
         self.e_yconstructionmax.grid(row=10, column=0)
         self.e_yconstructionmax.insert(0, self.tdefault_e_yconstructionmax)
         self.e_yconstructionmax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_yconstructionmax, 'e_yconstructionmax'))
         self.e_yconstructionmax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_yconstructionmax))
-        self.e_yconstructionmax.configure(fg="gray")
+        self.e_yconstructionmax.configure(fg="gray", validate='key', validatecommand=(self.e_yconstructionmax.register(lambda inp: self.character_limit(inp, 4)), "%P"))
 
         self.e_pricemin = tk.Entry(self, bd=5)
         self.e_pricemin.grid(row=11, column=0)
         self.e_pricemin.insert(0, self.tdefault_e_pricemin)
         self.e_pricemin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_pricemin, 'e_pricemin'))
         self.e_pricemin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_pricemin))
-        self.e_pricemin.configure(fg="gray")
+        self.e_pricemin.configure(fg="gray", validate='key', validatecommand=(self.e_pricemin.register(lambda inp: self.character_limit(inp, 8)), "%P"))
 
         self.e_pricemax = tk.Entry(self, bd=5)
         self.e_pricemax.grid(row=12, column=0)
         self.e_pricemax.insert(0, self.tdefault_e_pricemax)
         self.e_pricemax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_pricemax, 'e_pricemax'))
         self.e_pricemax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_pricemax))
-        self.e_pricemax.configure(fg="gray")
+        self.e_pricemax.configure(fg="gray", validate='key', validatecommand=(self.e_pricemax.register(lambda inp: self.character_limit(inp, 8)), "%P"))
 
         self.liste_typeenergie = ["","A", "B", "C", "D", "E", "F","G"]
         self.listComboEnergy = ttk.Combobox(self, values= self.liste_typeenergie, state="readonly")
         self.listComboEnergy.grid(row=13, column=0)
 
-        # self.cal = DateEntry(self, date_pattern='dd/mm/yyyy')
-        # self.cal.delete(0, END)
-        # self.cal.insert(0, "")
-        # self.cal.grid(row=14, column=0)
-
         tk.Button(self, text="Recherche", command= self.search_data_critere).grid(row=15, column=0)
-        tk.Button(self, text="Reinitialiser", command=self.clear_search_data_critere).grid(row=17, column=0)
 
         # Display Data on Tkinter
         conn_r = sqlite3.connect('gestion_immo.db')
@@ -237,7 +241,6 @@ class PageResearch(Page):
         prixmin = self.e_pricemin.get()
         prixmax = self.e_pricemax.get()
         classeenergie = self.listComboEnergy.get()
-        # date_s = self.cal.get_date().strftime("%d/%m/%Y")
 
         query = "SELECT * FROM T_GESTIONIMMO"
         if cb_appart or cb_maison or cb_location or cb_vente or search or minarea or maxarea or minnbpiece \
@@ -272,8 +275,6 @@ class PageResearch(Page):
             query += " PRIX >= '" + prixmin + "' AND"
         if prixmax and prixmax != 'Prix max.':
             query += " PRIX <= '" + prixmax + "' AND"
-        # if date_s:
-            # query += " DATE_MISE_MARCHE = '" + date_s + "'"
 
         query = query.rstrip("AND")
         query = query.rstrip("WHERE")
@@ -314,20 +315,6 @@ class PageResearch(Page):
                 i += 1
         conn_r.close()
 
-    def clear_search_data_critere(self):
-        list_clear = [self.e_search, self.e_areamin, self.e_areamax, self.e_nbpiecemin, self.e_nbpiecemax,
-                      self.e_yconstructionmin, self.e_yconstructionmax, self.e_pricemin, self.e_pricemax]
-        self.checkb_house = tk.IntVar(value=False)
-        self.checkb_appart = tk.IntVar(value=False)
-        self.checkb_Vente = tk.IntVar(value=False)
-        self.checkb_Location = tk.IntVar(value=False)
-        self.listComboEnergy.set('')
-
-        for entry in list_clear:
-            entry.delete(0, END)
-            entry.insert(0, '')
-        self.search_data_critere()
-
     def reset_allentry(self, event_resetentry, txt):
         entry_str = f"self.tdefault_{txt}"
         entry_default = eval(entry_str)
@@ -337,7 +324,6 @@ class PageResearch(Page):
             event_resetentry.configure(fg="gray")
 
     def click_allentry(self, event_clickentry):
-        # event_clickentry = self.e_search
         if event_clickentry.get() == 'Surface min.' or 'Commune' or 'Surface max.' or 'Nbre de piece min.' or 'Nbre de piece max.' or 'Annee de construction min.' or 'Annee de construction max.' or 'Prix min.' or 'Prix max.':
             event_clickentry.delete(0, END)
             event_clickentry.insert(0, '')
@@ -358,6 +344,7 @@ class PageSave(Page):
                                  command=self.enableEntryAreaGarden)
         tk.Label(self, text="N°").grid(row=1, column=1)
         self.e_no = tk.Entry(self, bd=5)
+        self.e_no.config(validate='key', validatecommand=(self.e_no.register(lambda inp: self.character_limit(inp, 5)), "%P"))
 
         tk.Label(self, text="Type de voie : ").grid(row=2, column=1)
         self.liste_typewall = ["Rue", "Impasse", "Avenue", "Boulevard", "Allée", "Place"]
@@ -366,16 +353,22 @@ class PageSave(Page):
 
         tk.Label(self, text="Nom de rue : ").grid(row=3, column=1)
         self.e_namewall = tk.Entry(self, bd=5)
+        self.e_namewall.config(validate='key', validatecommand=(self.e_namewall.register(lambda inp_str: self.character_limit_str(inp_str, 100)), "%P"))
         tk.Label(self, text="Code Postale : ").grid(row=4, column=1)
         self.e_postalecode = tk.Entry(self, bd=5)
+        self.e_postalecode.config(validate='key', validatecommand=(self.e_postalecode.register(lambda inp: self.character_limit(inp, 5)), "%P"))
         tk.Label(self, text="Commune :").grid(row=5, column=1)
         self.e_common = tk.Entry(self, bd=5)
+        self.e_common.config(validate='key', validatecommand=(self.e_common.register(lambda inp_str: self.character_limit_str(inp_str, 40)), "%P"))
         tk.Label(self, text="Superficie couvert : ").grid(row=6, column=1)
         self.e_areacovered = tk.Entry(self, bd=5)
+        self.e_areacovered.config(validate='key', validatecommand=(self.e_areacovered.register(lambda inp: self.character_limit(inp, 5)), "%P"))
         tk.Label(self, text="Superficie jardin : ").grid(row=7, column=1)
         self.e_areagarden = tk.Entry(self, bd=5)
+        self.e_areagarden.config(validate='key', validatecommand=(self.e_areagarden.register(lambda inp: self.character_limit(inp, 5)), "%P"))
         tk.Label(self, text="Nombre de pièce : ").grid(row=8, column=1)
         self.e_numroom = tk.Entry(self, bd=5)
+        self.e_numroom.config(validate='key', validatecommand=(self.e_numroom.register(lambda inp: self.character_limit(inp, 3)), "%P"))
         tk.Label(self, text="Classe énergétique : ").grid(row=9, column=1)
         self.liste_typeenergie = ["", "A", "B", "C", "D", "E", "F", "G"]
         self.listComboEnergy = ttk.Combobox(self, values=self.liste_typeenergie, state="readonly")
@@ -383,6 +376,7 @@ class PageSave(Page):
 
         tk.Label(self, text="Année de construction : ").grid(row=10, column=1)
         self.e_yearconstruct = tk.Entry(self, bd=5)
+        self.e_yearconstruct.config(validate='key', validatecommand=(self.e_yearconstruct.register(lambda inp: self.character_limit(inp, 4)), "%P"))
         self.value_naturemana = tk.StringVar(None, "VN")
         b_sell = tk.Radiobutton(self, text="Vente", variable=self.value_naturemana, value='Vente')
         b_location = tk.Radiobutton(self, text="Location", variable=self.value_naturemana, value='Location')
@@ -390,6 +384,7 @@ class PageSave(Page):
         self.cal = DateEntry(self, selectmode='day', date_pattern='dd/mm/yyyy')
         tk.Label(self, text="Prix").grid(row=13, column=1)
         self.e_price = tk.Entry(self, bd=5)
+        self.e_price.config(validate='key', validatecommand=(self.e_price.register(lambda inp: self.character_limit(inp, 8)), "%P"))
 
         b_appart.grid(row=0, column=1, sticky=tk.NS)
         b_house.grid(row=0, column=2, sticky=tk.NS)
@@ -506,7 +501,7 @@ class PageSave(Page):
         db.close()
         self.researchpage.refresh_db()
 
-        # Clear the entry (à faire)
+        # Clear the entry
         self.value_bien.set("VB")
         self.value_naturemana.set("VN")
         self.listComboEnergy.set('')
