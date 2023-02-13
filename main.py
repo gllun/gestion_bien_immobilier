@@ -5,6 +5,8 @@ from tkcalendar import DateEntry
 from tkinter import ttk
 from tkinter import *
 from datetime import datetime
+from tkinter import Canvas
+from PIL import Image, ImageTk
 
 # Creation de ma base de donnees
 try:
@@ -56,6 +58,104 @@ class Page(tk.Frame):
 class PageResearch(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
+        self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1450, bd=0, highlightthickness=0, relief="ridge",
+                             scrollregion=(0,0,700,1640))
+        self.canvas.place(x=0, y=0)
+
+        vbar = Scrollbar(root, orient=VERTICAL)
+        vbar.pack(side=RIGHT, fill=Y)
+        vbar.config(command=self.canvas.yview)
+        self.canvas.config(yscrollcommand=vbar.set)
+
+        #Charge img
+        self.img_house = Image.open(
+            "C:/Users/Test/OneDrive/Doc - Gael Luntala/Bac +3 - Administrateur SI/Developpement/Python/Eval #1 - Gestion de biens d’une agence immobilière/house.jpg")
+        self.img_house = self.img_house.resize((239, 150), Image.ANTIALIAS)
+        self.img_house = ImageTk.PhotoImage(self.img_house)
+
+        self.img_building = Image.open(
+            "C:/Users/Test/OneDrive/Doc - Gael Luntala/Bac +3 - Administrateur SI/Developpement/Python/Eval #1 - Gestion de biens d’une agence immobilière/building.jpg")
+        self.img_building = self.img_building.resize((239, 150), Image.ANTIALIAS)
+        self.img_building = ImageTk.PhotoImage(self.img_building)
+
+        self.canvas.create_rectangle(
+            0.0,
+            28.0,
+            1440.0,  # PARTI COULEUR DU CORPS DU TEXTE
+            1052.0,
+            fill="#6FCF97",
+            outline="")
+
+        self.canvas.create_rectangle(0, 0, 480, 119, fill="#219653", outline="", tags="rec_main")
+        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Lobster", '20'), tags="rec_main")
+        # self.canvas.tag_bind("rec_main", "<Button-1>", self.show_main)
+
+        self.canvas.create_rectangle(480, 0, 960, 119, fill="#27AE60", outline="", tags="rec_save")
+        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Lobster", '20'), tags="rec_save")
+        # self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
+
+        self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
+        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Lobster", '20'), tags="rec_research")
+        # self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
+
+        self.canvas.create_rectangle(325, 770, 0, 119, fill="#5EBD85", outline="")
+
+        # Display Data on Tkinter
+        conn_r = sqlite3.connect('gestion_immo.db')
+        curseur = conn_r.cursor()
+        curseur.execute("SELECT * FROM T_GESTIONIMMO")
+        self.result = curseur.fetchall()
+        self.list_disdata = []
+
+        i = 1
+        j = 1
+        b_rec = 150
+        d_rec = 430
+        a_rec = 360
+        c_rec = 600
+        img_x = 480
+        img_y = 226
+        txt_x = 540
+        txt_y = 410
+        nb_row = 1
+        for tuple_bien in self.result:
+            self.canvas.create_rectangle(a_rec, b_rec, c_rec, d_rec, fill="")
+            if tuple_bien[1] == "Maison":
+                self.canvas.create_image(img_x, img_y, image=self.img_house)
+            elif tuple_bien[1] == "Appartement":
+                self.canvas.create_image(img_x, img_y, image=self.img_building)
+            self.l_bien = self.canvas.create_text(txt_x-125, txt_y-90, text=tuple_bien[j], font=("Lobster", '12'))  # L1
+            self.l_commune = self.canvas.create_text(txt_x, txt_y-90, text=tuple_bien[j + 6], font=("Lobster", '12'))  # L1
+            self.l_areacouv = self.canvas.create_text(txt_x-140, txt_y-60, text=tuple_bien[j + 7], font=("Lobster", '12'))  # L2
+            self.l_piece = self.canvas.create_text(txt_x, txt_y-60, text=tuple_bien[j + 9], font=("Lobster", '12'))  # L2
+            self.l_cenergetique = self.canvas.create_text(txt_x-128, txt_y-30, text="Classe E. : "+ tuple_bien[j + 10], font=("Lobster", '12'))  # L3
+            self.l_anneeconstruct = self.canvas.create_text(txt_x, txt_y-30, text=tuple_bien[j + 11], font=("Lobster", '12'))  # L3
+            self.l_natureimmo = self.canvas.create_text(txt_x-138, txt_y, text=tuple_bien[j + 1], font=("Lobster", '12'))  # L4
+            self.l_prix = self.canvas.create_text(txt_x, txt_y, text=tuple_bien[j + 13], font=("Lobster", '12'))  # L4
+            a_rec += 270
+            c_rec += 270
+            img_x += 270
+            txt_x += 270
+            if nb_row == 4:
+                b_rec += 310
+                d_rec += 310
+                img_x = 480
+                img_y += 310
+                txt_x = 540
+                txt_y += 310
+                a_rec = 360
+                c_rec = 600
+                nb_row = 1
+            else:
+                nb_row += 1
+
+            i += 1
+            for col in range(8):
+                list_label = eval(
+                    f"self.l_{['bien', 'natureimmo', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix'][col]}")
+                self.list_disdata.append(list_label)
+        conn_r.close()
+
         # Text default in the entry
         self.tdefault_e_search = "Commune"
         self.tdefault_e_areamin = "Surface min."
@@ -153,39 +253,6 @@ class PageResearch(Page):
 
         tk.Button(self, text="Recherche", command= self.search_data_critere).grid(row=15, column=0)
 
-        # Display Data on Tkinter
-        conn_r = sqlite3.connect('gestion_immo.db')
-        curseur = conn_r.cursor()
-        curseur.execute("SELECT * FROM T_GESTIONIMMO")
-        self.result = curseur.fetchall()
-        self.list_disdata = []
-        i = 2
-        j = 1
-        for tuple_bien in self.result:
-            self.l_bien = tk.Label(self, width=10, fg='blue', text=tuple_bien[j])
-            self.l_bien.grid(row=i, column=j, padx=2)
-            self.l_natureimmo = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 1])
-            self.l_natureimmo.grid(row=i, column=j + 1, padx=2)
-            self.l_cp = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 5])
-            self.l_cp.grid(row=i, column=j + 2, padx=2)
-            self.l_commune = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 6])
-            self.l_commune.grid(row=i, column=j + 3, padx=2)
-            self.l_areacouv = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 7])
-            self.l_areacouv.grid(row=i, column=j + 4, padx=2)
-            self.l_piece = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 9])
-            self.l_piece.grid(row=i, column=j + 5, padx=2)
-            self.l_cenergetique = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 10])
-            self.l_cenergetique.grid(row=i, column=j + 6, padx=2)
-            self.l_anneeconstruct = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 11])
-            self.l_anneeconstruct.grid(row=i, column=j + 7, padx=2)
-            self.l_prix = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 13])
-            self.l_prix.grid(row=i, column=j + 8, padx=2)
-            i += 1
-            for col in range(9):
-                list_label = eval(f"self.l_{['bien', 'natureimmo', 'cp', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix'][col]}")
-                self.list_disdata.append(list_label)
-        conn_r.close()
-
     def refresh_db(self):
         for item in self.list_disdata:
             item.grid_remove()
@@ -201,8 +268,8 @@ class PageResearch(Page):
             self.l_bien.grid(row=i, column=j, padx=2)
             self.l_natureimmo = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 1])
             self.l_natureimmo.grid(row=i, column=j + 1, padx=2)
-            self.l_cp = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 5])
-            self.l_cp.grid(row=i, column=j + 2, padx=2)
+            #self.l_cp = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 5])
+            #self.l_cp.grid(row=i, column=j + 2, padx=2)
             self.l_commune = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 6])
             self.l_commune.grid(row=i, column=j + 3, padx=2)
             self.l_areacouv = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 7])
@@ -216,8 +283,8 @@ class PageResearch(Page):
             self.l_prix = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 13])
             self.l_prix.grid(row=i, column=j + 8, padx=2)
             i += 1
-            for col in range(9):
-                list_label = eval(f"self.l_{['bien', 'natureimmo', 'cp', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix'][col]}")
+            for col in range(8):
+                list_label = eval(f"self.l_{['bien', 'natureimmo', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix'][col]}")
                 self.list_disdata.append(list_label)
         conn_r.close()
 
@@ -295,8 +362,8 @@ class PageResearch(Page):
                 self.l_bien.grid(row=i, column=j, padx=2)
                 self.l_natureimmo = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 1])
                 self.l_natureimmo.grid(row=i, column=j + 1, padx=2)
-                self.l_cp = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 5])
-                self.l_cp.grid(row=i, column=j + 2, padx=2)
+                #self.l_cp = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 5])
+                #self.l_cp.grid(row=i, column=j + 2, padx=2)
                 self.l_commune = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 6])
                 self.l_commune.grid(row=i, column=j + 3, padx=2)
                 self.l_areacouv = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 7])
@@ -309,8 +376,8 @@ class PageResearch(Page):
                 self.l_anneeconstruct.grid(row=i, column=j + 7, padx=2)
                 self.l_prix = tk.Label(self, width=10, fg='blue', text=tuple_bien[j + 13])
                 self.l_prix.grid(row=i, column=j + 8, padx=2)
-                for col in range(9):
-                    list_label = eval(f"self.l_{['bien', 'natureimmo', 'cp', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix'][col]}")
+                for col in range(8):
+                    list_label = eval(f"self.l_{['bien', 'natureimmo', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix'][col]}")
                     self.list_disdata.append(list_label)
                 i += 1
         conn_r.close()
@@ -333,9 +400,31 @@ class PageResearch(Page):
 class PageSave(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
+        self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1440, bd=0, highlightthickness=0, relief="ridge")
+        self.canvas.place(x=0, y=0)
         self.researchpage = PageResearch()
         self.columnconfigure(0, weight=2)
         self.rowconfigure(1, weight=1)
+
+        self.canvas.create_rectangle(
+            0.0,
+            28.0,
+            1440.0,  # PARTI COULEUR DU CORPS
+            1052.0,
+            fill="#27AE60",
+            outline="")
+
+        self.canvas.create_rectangle(0, 0, 480, 119, fill="#219653", outline="", tags="rec_main")
+        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Lobster", '20'), tags="rec_main")
+        # self.canvas.tag_bind("rec_main", "<Button-1>", self.show_main)
+
+        self.canvas.create_rectangle(480, 0, 960, 119, fill="#27AE60", outline="", tags="rec_save")
+        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Lobster", '20'), tags="rec_save")
+        # self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
+
+        self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
+        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Lobster", '20'), tags="rec_research")
+        # self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
 
         self.value_bien = tk.StringVar(None, "VB")
         b_appart = tk.Radiobutton(self, text="Appartement", variable=self.value_bien, value='Appartement',
@@ -528,47 +617,59 @@ class PageSave(Page):
 class PageMain(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
-        p_research = PageResearch(self)
-        p_save = PageSave(self)
-        b_exit = tk.Button(self, text="Fermer", command=self.quit)
-        l_title = tk.Label(self, text="Gestion Immobilier", font=42)
-        b_research = tk.Button(self, text="Recherche de biens", command=p_research.show)
-        b_save = tk.Button(self, text="Enregistrement de biens", command=p_save.show)
 
-        b_exit.pack()
-        l_title.pack()
-        b_research.pack()
-        b_save.pack()
 
 class MainView(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        p_main = PageMain(self)
-        p_research = PageResearch(self)
-        p_save = PageSave(self)
+        self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1490, bd=0, highlightthickness=0, relief="ridge")
+        self.canvas.place(x=0, y=0)
 
-        buttonframe = tk.Frame(self)
-        container = tk.Frame(self)
-        buttonframe.pack(side="top", fill="x", expand=False)
-        container.pack(side="top", fill="both", expand=True)
+        self.p_main = PageMain(self)
+        self.p_research = PageResearch(self)
+        self.p_save = PageSave(self)
 
-        p_main.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
-        p_research.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
-        p_save.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+        self.canvas.create_rectangle(
+            0.0,
+            28.0,
+            1440.0,  # PARTI COULEUR DU CORPS DU TEXTE
+            1052.0,
+            fill="#219653",
+            outline="")
 
-        b1 = tk.Button(buttonframe, text="Accueil", command=p_main.show)
-        b2 = tk.Button(buttonframe, text="Recherche de biens", command=p_research.show)
-        b3 = tk.Button(buttonframe, text="Enregistrement de biens", command=p_save.show)
+        self.canvas.create_rectangle(0, 0, 480, 119, fill="#219653", outline="", tags="rec_main")
+        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Lobster", '20'), tags="rec_main")
+        self.canvas.tag_bind("rec_main", "<Button-1>", self.show_main)
 
-        b1.pack(side="left")
-        b2.pack(side="left")
-        b3.pack(side="left")
+        self.canvas.create_rectangle(480, 0, 960, 119, fill="#27AE60", outline="", tags="rec_save")
+        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Lobster", '20'), tags="rec_save")
+        self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
 
-        p_main.show()
+        self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
+        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Lobster", '20'), tags="rec_research")
+        self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
+
+        self.canvas.create_text(695.00, 450.00, text="Bienvenue sur votre logiciel de gestion de bien",
+                                font=('Lobster', '30'))
+
+    def show_main(self, event= None):
+        self.p_main.pack(side="top", fill="both", expand=True)
+        self.p_research.pack_forget()
+        self.p_save.pack_forget()
+
+    def show_research(self, event= None):
+        self.p_main.pack_forget()
+        self.p_research.pack(side="top", fill="both", expand=True)
+        self.p_save.pack_forget()
+
+    def show_save(self, event= None):
+        self.p_main.pack_forget()
+        self.p_research.pack_forget()
+        self.p_save.pack(side="top", fill="both", expand=True)
 
 if __name__ == "__main__":
     root = tk.Tk()
     main = MainView(root)
     main.pack(side="top", fill="both", expand=True)
-    root.wm_geometry("1000x650")
+    root.wm_geometry("1450x770")
     root.mainloop()
