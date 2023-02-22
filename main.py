@@ -453,6 +453,7 @@ class PageResearch(Page):
 class PageSave(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
+
         self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1440, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
         self.researchpage = PageResearch()
@@ -467,17 +468,18 @@ class PageSave(Page):
             fill="#27AE60",
             outline="")
 
+
         self.canvas.create_rectangle(0, 0, 480, 119, fill="#219653", outline="", tags="rec_main")
         self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Lobster", '20'), tags="rec_main")
-        # self.canvas.tag_bind("rec_main", "<Button-1>", self.show_main)
+        self.canvas.tag_bind("rec_main", "<Button-1>", MainView.show_main)
 
         self.canvas.create_rectangle(480, 0, 960, 119, fill="#27AE60", outline="", tags="rec_save")
         self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Lobster", '20'), tags="rec_save")
-        # self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
+        self.canvas.tag_bind("rec_save", "<Button-1>", MainView.show_save)
 
         self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
         self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Lobster", '20'), tags="rec_research")
-        # self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
+        self.canvas.tag_bind("rec_research", "<Button-1>", MainView.show_research)
 
         self.value_bien = tk.StringVar(None, "VB")
         b_appart = tk.Radiobutton(self, text="Appartement", variable=self.value_bien, value='Appartement',
@@ -706,8 +708,8 @@ class MainView(tk.Frame):
                                 font=('Lobster', '30'))
 
     def show_main(self, event= None):
-        self.p_main.pack(side="top", fill="both", expand=True)
-        self.p_research.pack_forget()
+        PageMain(self).pack(side="top", fill="both", expand=True)
+        PageResearch(self).pack_forget()
         self.p_save.pack_forget()
 
     def show_research(self, event= None):
