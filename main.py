@@ -65,12 +65,12 @@ class PageResearch(Page):
 
         #Charge img
         self.img_house = Image.open(
-            "C:/Users/Test/OneDrive/Doc - Gael Luntala/Bac +3 - Administrateur SI/Developpement/Python/Eval #1 - Gestion de biens d’une agence immobilière/house.jpg")
+            "C:/Cours/Python/Projet Python/gestion_bien_immobilier-master/house.jpg")
         self.img_house = self.img_house.resize((239, 150), Image.ANTIALIAS)
         self.img_house = ImageTk.PhotoImage(self.img_house)
 
         self.img_building = Image.open(
-            "C:/Users/Test/OneDrive/Doc - Gael Luntala/Bac +3 - Administrateur SI/Developpement/Python/Eval #1 - Gestion de biens d’une agence immobilière/building.jpg")
+            "C:/Cours/Python/Projet Python/gestion_bien_immobilier-master/building.jpg")
         self.img_building = self.img_building.resize((239, 150), Image.ANTIALIAS)
         self.img_building = ImageTk.PhotoImage(self.img_building)
 
@@ -83,18 +83,18 @@ class PageResearch(Page):
             outline="")
 
         self.canvas.create_rectangle(0, 0, 480, 119, fill="#219653", outline="", tags="rec_main")
-        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Lobster", '20'), tags="rec_main")
+        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Ink Free", '22'), tags="rec_main")
         # self.canvas.tag_bind("rec_main", "<Button-1>", self.show_main)
 
         self.canvas.create_rectangle(480, 0, 960, 119, fill="#27AE60", outline="", tags="rec_save")
-        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Lobster", '20'), tags="rec_save")
+        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Ink Free", '22'), tags="rec_save")
         # self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
 
         self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
-        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Lobster", '20'), tags="rec_research")
+        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Ink Free", '22'), tags="rec_research")
         # self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
 
-        self.canvas.create_rectangle(325, 770, 0, 119, fill="#5EBD85", outline="")
+        self.canvas.create_rectangle(230, 770, 0, 119, fill="#5EBD85", outline="")
 
         # Display Data on Tkinter
         conn_r = sqlite3.connect('gestion_immo.db')
@@ -106,11 +106,11 @@ class PageResearch(Page):
         j = 1
         b_rec = 150
         d_rec = 430
-        a_rec = 360
-        c_rec = 600
-        img_x = 480
+        a_rec = 300
+        c_rec = 540
+        img_x = 420
         img_y = 226
-        txt_x = 540
+        txt_x = 480
         txt_y = 410
         nb_row = 1
         for tuple_bien in self.result:
@@ -134,12 +134,12 @@ class PageResearch(Page):
             if nb_row == 4:
                 b_rec += 310
                 d_rec += 310
-                img_x = 480
+                img_x = 420
                 img_y += 310
-                txt_x = 540
+                txt_x = 480
                 txt_y += 310
-                a_rec = 360
-                c_rec = 600
+                a_rec = 300
+                c_rec = 540
                 nb_row = 1
             else:
                 nb_row += 1
@@ -151,101 +151,129 @@ class PageResearch(Page):
         conn_r.close()
 
         # Text default in the entry
-        self.tdefault_e_search = "Commune"
-        self.tdefault_e_areamin = "Surface min."
-        self.tdefault_e_areamax = "Surface max."
-        self.tdefault_e_nbpiecemin = "Nbre de piece min."
-        self.tdefault_e_nbpiecemax = "Nbre de piece max."
-        self.tdefault_e_yconstructionmin = "Annee de construction min."
-        self.tdefault_e_yconstructionmax = "Annee de construction max."
-        self.tdefault_e_pricemin = "Prix min."
-        self.tdefault_e_pricemax = "Prix max."
+        self.tdefault_e_search = "Entrer Ville"
+        self.tdefault_e_areamin = "Min"
+        self.tdefault_e_areamax = "Max"
+        self.tdefault_e_nbpiecemin = "Min"
+        self.tdefault_e_nbpiecemax = "Max"
+        self.tdefault_e_yconstructionmin = "Min"
+        self.tdefault_e_yconstructionmax = "Max"
+        self.tdefault_e_pricemin = "Min"
+        self.tdefault_e_pricemax = "Max"
 
         # All the critere for search with button validate
         self.checkb_appart = tk.IntVar(value=False)
-        self.cb_appart = tk.Checkbutton(self, text="Appartement", variable=self.checkb_appart, onvalue=True,
-                                        offvalue=False)
-        self.cb_appart.grid(row=0, column=0)
-        self.checkb_house = tk.IntVar(value=False)
-        self.cb_house = tk.Checkbutton(self, text="Maison", variable=self.checkb_house,onvalue=True,
-                                       offvalue=False)
-        self.cb_house.grid(row=1, column=0)
+        self.cb_appart = tk.Checkbutton(self, text="Appartement", variable=self.checkb_appart, onvalue=True, offvalue=False, 	
+bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
+        self.cb_appart.place(x=10, y=230)
+        self.checkb_house = tk.IntVar(value=False)  
+        self.cb_house = tk.Checkbutton(self, text="Maison", variable=self.checkb_house,onvalue=True, offvalue=False, 	
+bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
+        self.cb_house.place(x=140, y=230)
         self.checkb_Location = tk.IntVar(value=False)
-        self.cb_Location = tk.Checkbutton(self, text="Location", variable=self.checkb_Location, onvalue=True,
-                                          offvalue=False)
-        self.cb_Location.grid(row=2, column=0)
+        self.cb_Location = tk.Checkbutton(self, text="Location", variable=self.checkb_Location, onvalue=True, offvalue=False, 	
+bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
+        self.cb_Location.place(x=10, y=260)
         self.checkb_Vente = tk.IntVar(value=False)
-        self.cb_Vente = tk.Checkbutton(self, text="Vente", variable=self.checkb_Vente, onvalue=True, offvalue=False)
-        self.cb_Vente.grid(row=3, column=0)
 
-        self.e_search = tk.Entry(self, bd=5)
-        self.e_search.grid(row=4, column=0)
+        self.cb_Vente = tk.Checkbutton(self, text="Vente", variable=self.checkb_Vente, onvalue=True, offvalue=False, 	
+bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
+        self.cb_Vente.place(x=140, y=260)   
+
+        self.frame_recherche = tk.Frame(self, bg='#54AA77')
+        self.frame_recherche.place(x=0, y=119,width=230,height=100)    
+
+        # LABELS       
+
+        self.label_ville = tk.Label(self, text="Recherche", font=('Ink Free', 19), fg="white", bg='#54AA77')
+        self.label_ville.place(x=60, y=152) 
+        self.label_ville = tk.Label(self, text="Ville", font=('Arial', 11), fg="black", bg='#5EBD85')
+        self.label_ville.place(x=13, y=293)
+
+            
+        self.label_ville = tk.Label(self, text="Surface", font=('Arial', 11), fg="black", bg='#5EBD85')
+        self.label_ville.place(x=13, y=353)
+        
+        self.label_ville = tk.Label(self, text="Nombre de pièces", font=('Arial', 11), fg="black", bg='#5EBD85')
+        self.label_ville.place(x=13, y=413)
+
+        self.label_ville = tk.Label(self, text="Année de construction", font=('Arial', 11), fg="black", bg='#5EBD85')
+        self.label_ville.place(x=13, y=473)
+
+        self.label_ville = tk.Label(self, text="Prix", font=('Arial', 11), fg="black", bg='#5EBD85')
+        self.label_ville.place(x=13, y=533)
+
+        self.label_ville = tk.Label(self, text="Classe énergetique", font=('Arial', 11), fg="black", bg='#5EBD85')
+        self.label_ville.place(x=13, y=593)
+
+        self.e_search = tk.Entry(self, bd=0)
+        self.e_search.place(x=13, y=313, height=40, width=200)
         self.e_search.insert(0, self.tdefault_e_search)
         self.e_search.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_search, 'e_search'))
         self.e_search.bind("<FocusIn>", lambda event: self.click_allentry(self.e_search))
-        self.e_search.configure(fg="gray", validate='key', validatecommand=(self.e_search.register(lambda inp_str: self.character_limit_str(inp_str, 40)), "%P"))
-
+        self.e_search.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_search.register(lambda inp_str: self.character_limit_str(inp_str, 40)), "%P"))
+        
         self.e_areamin = tk.Entry(self, bd=5)
-        self.e_areamin.grid(row=5, column=0)
+        self.e_areamin.place(x=13, y=373, height=40, width=90)
         self.e_areamin.insert(0, self.tdefault_e_areamin)
         self.e_areamin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_areamin, 'e_areamin'))
         self.e_areamin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_areamin))
-        self.e_areamin.configure(fg="gray", validate='key', validatecommand=(self.e_areamin.register(lambda inp: self.character_limit(inp, 5)), "%P"))
+        self.e_areamin.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_areamin.register(lambda inp: self.character_limit(inp, 5)), "%P"))
 
         self.e_areamax = tk.Entry(self, bd=5)
-        self.e_areamax.grid(row=6, column=0)
+        self.e_areamax.place(x=122, y=373, height=40, width=90)
         self.e_areamax.insert(0, self.tdefault_e_areamax)
         self.e_areamax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_areamax, 'e_areamax'))
         self.e_areamax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_areamax))
-        self.e_areamax.configure(fg="gray", validate='key', validatecommand=(self.e_areamax.register(lambda inp: self.character_limit(inp, 5)), "%P"))
+        self.e_areamax.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_areamax.register(lambda inp: self.character_limit(inp, 5)), "%P"))
 
         self.e_nbpiecemin = tk.Entry(self, bd=5)
-        self.e_nbpiecemin.grid(row=7, column=0)
+        self.e_nbpiecemin.place(x=13, y=433, height=40, width=90)
         self.e_nbpiecemin.insert(0, self.tdefault_e_nbpiecemin)
         self.e_nbpiecemin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_nbpiecemin, 'e_nbpiecemin'))
         self.e_nbpiecemin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_nbpiecemin))
-        self.e_nbpiecemin.configure(fg="gray", validate='key', validatecommand=(self.e_nbpiecemin.register(lambda inp: self.character_limit(inp, 3)), "%P"))
+        self.e_nbpiecemin.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_nbpiecemin.register(lambda inp: self.character_limit(inp, 3)), "%P"))
 
         self.e_nbpiecemax = tk.Entry(self, bd=5)
-        self.e_nbpiecemax.grid(row=8, column=0)
+        self.e_nbpiecemax.place(x=122, y=433, height=40, width=90)
         self.e_nbpiecemax.insert(0, self.tdefault_e_nbpiecemax)
         self.e_nbpiecemax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_nbpiecemax, 'e_nbpiecemax'))
         self.e_nbpiecemax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_nbpiecemax))
-        self.e_nbpiecemax.configure(fg="gray", validate='key', validatecommand=(self.e_nbpiecemax.register(lambda inp: self.character_limit(inp, 3)), "%P"))
+        self.e_nbpiecemax.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_nbpiecemax.register(lambda inp: self.character_limit(inp, 3)), "%P"))
 
         self.e_yconstructionmin = tk.Entry(self, bd=5)
-        self.e_yconstructionmin.grid(row=9, column=0)
+        self.e_yconstructionmin.place(x=13, y=493, height=40, width=90)
         self.e_yconstructionmin.insert(0, self.tdefault_e_yconstructionmin)
         self.e_yconstructionmin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_yconstructionmin, 'e_yconstructionmin'))
         self.e_yconstructionmin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_yconstructionmin))
-        self.e_yconstructionmin.configure(fg="gray", validate='key', validatecommand=(self.e_yconstructionmin.register(lambda inp: self.character_limit(inp, 4)), "%P"))
+        self.e_yconstructionmin.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_yconstructionmin.register(lambda inp: self.character_limit(inp, 4)), "%P"))
 
         self.e_yconstructionmax = tk.Entry(self, bd=5)
-        self.e_yconstructionmax.grid(row=10, column=0)
+        self.e_yconstructionmax.place(x=122, y=493, height=40, width=90)
         self.e_yconstructionmax.insert(0, self.tdefault_e_yconstructionmax)
         self.e_yconstructionmax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_yconstructionmax, 'e_yconstructionmax'))
         self.e_yconstructionmax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_yconstructionmax))
-        self.e_yconstructionmax.configure(fg="gray", validate='key', validatecommand=(self.e_yconstructionmax.register(lambda inp: self.character_limit(inp, 4)), "%P"))
+        self.e_yconstructionmax.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_yconstructionmax.register(lambda inp: self.character_limit(inp, 4)), "%P"))
 
         self.e_pricemin = tk.Entry(self, bd=5)
-        self.e_pricemin.grid(row=11, column=0)
+        self.e_pricemin.place(x=13, y=553, height=40, width=90)
         self.e_pricemin.insert(0, self.tdefault_e_pricemin)
         self.e_pricemin.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_pricemin, 'e_pricemin'))
         self.e_pricemin.bind("<FocusIn>", lambda event: self.click_allentry(self.e_pricemin))
-        self.e_pricemin.configure(fg="gray", validate='key', validatecommand=(self.e_pricemin.register(lambda inp: self.character_limit(inp, 8)), "%P"))
+        self.e_pricemin.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_pricemin.register(lambda inp: self.character_limit(inp, 8)), "%P"))
 
         self.e_pricemax = tk.Entry(self, bd=5)
-        self.e_pricemax.grid(row=12, column=0)
+        self.e_pricemax.place(x=122, y=553, height=40, width=90)
         self.e_pricemax.insert(0, self.tdefault_e_pricemax)
         self.e_pricemax.bind("<FocusOut>", lambda event: self.reset_allentry(self.e_pricemax, 'e_pricemax'))
         self.e_pricemax.bind("<FocusIn>", lambda event: self.click_allentry(self.e_pricemax))
-        self.e_pricemax.configure(fg="gray", validate='key', validatecommand=(self.e_pricemax.register(lambda inp: self.character_limit(inp, 8)), "%P"))
+        self.e_pricemax.configure(bd=3,font=('Arial', 11),width=27,fg="gray", validate='key', validatecommand=(self.e_pricemax.register(lambda inp: self.character_limit(inp, 8)), "%P"))
 
         self.liste_typeenergie = ["","A", "B", "C", "D", "E", "F","G"]
         self.listComboEnergy = ttk.Combobox(self, values= self.liste_typeenergie, state="readonly")
-        self.listComboEnergy.grid(row=13, column=0)
+        self.listComboEnergy.place(x=13, y=620,width=200)
 
-        tk.Button(self, text="Recherche", command= self.search_data_critere).grid(row=15, column=0)
+        tk.Button(self, text="Chercher", command= self.search_data_critere).place(x=67, y=670,height=45,width=90)
 
     def refresh_db(self):
         # Delete data principal on the app
@@ -347,25 +375,25 @@ class PageResearch(Page):
             query += " NATURE_GESTION = 'Location' AND"
         if cb_vente:
             query += " NATURE_GESTION = 'Vente' AND"
-        if search and search != 'Commune':
+        if search and search != 'Entrer Ville':
             query += " COMMUNE LIKE '" + search.upper() + "%' AND"
-        if minarea and minarea != 'Surface min.':
+        if minarea and minarea != 'Min':
             query += " S_COUVERTE >= '" + minarea + "' AND"
-        if maxarea and maxarea != 'Surface max.':
+        if maxarea and maxarea != 'Max':
             query += " S_COUVERTE <= '" + maxarea + "' AND"
-        if minnbpiece and minnbpiece != 'Nbre de piece min.':
+        if minnbpiece and minnbpiece != 'Min':
             query += " NOMBRE_PIECE >= '" + minnbpiece + "' AND"
-        if maxnbpiece and maxnbpiece != 'Nbre de piece max.':
+        if maxnbpiece and maxnbpiece != 'Max':
             query += " NOMBRE_PIECE <= '" + maxnbpiece + "' AND"
-        if yearconstructionmin and yearconstructionmin != 'Annee de construction min.':
+        if yearconstructionmin and yearconstructionmin != 'Min':
             query += " ANNEE_CONSTRUCTION >= '" + yearconstructionmin + "' AND"
-        if yearconstructionmax and yearconstructionmax != 'Annee de construction max.':
+        if yearconstructionmax and yearconstructionmax != 'Max':
             query += " ANNEE_CONSTRUCTION <= '" + yearconstructionmax + "' AND"
         if classeenergie:
             query += " CLASSE_ENERGETIQUE = '" + classeenergie + "' AND"
-        if prixmin and prixmin != 'Prix min.':
+        if prixmin and prixmin != 'Min':
             query += " PRIX >= '" + prixmin + "' AND"
-        if prixmax and prixmax != 'Prix max.':
+        if prixmax and prixmax != 'Max':
             query += " PRIX <= '" + prixmax + "' AND"
 
         query = query.rstrip("AND")
@@ -453,7 +481,8 @@ class PageResearch(Page):
 class PageSave(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
-        self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1440, bd=0, highlightthickness=0, relief="ridge")
+
+        self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1450, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
         self.researchpage = PageResearch()
         self.columnconfigure(0, weight=2)
@@ -467,17 +496,18 @@ class PageSave(Page):
             fill="#27AE60",
             outline="")
 
+
         self.canvas.create_rectangle(0, 0, 480, 119, fill="#219653", outline="", tags="rec_main")
-        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Lobster", '20'), tags="rec_main")
-        # self.canvas.tag_bind("rec_main", "<Button-1>", self.show_main)
+        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Ink Free", '22'), tags="rec_main")
+        self.canvas.tag_bind("rec_main", "<Button-1>", MainView.show_main)
 
         self.canvas.create_rectangle(480, 0, 960, 119, fill="#27AE60", outline="", tags="rec_save")
-        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Lobster", '20'), tags="rec_save")
-        # self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
+        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Ink Free", '22'), tags="rec_save")
+        self.canvas.tag_bind("rec_save", "<Button-1>", MainView.show_save)
 
         self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
-        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Lobster", '20'), tags="rec_research")
-        # self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
+        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Ink Free", '22'), tags="rec_research")
+        self.canvas.tag_bind("rec_research", "<Button-1>", MainView.show_research)
 
         self.value_bien = tk.StringVar(None, "VB")
         b_appart = tk.Radiobutton(self, text="Appartement", variable=self.value_bien, value='Appartement',
@@ -520,7 +550,7 @@ class PageSave(Page):
         self.e_yearconstruct = tk.Entry(self, bd=5)
         self.e_yearconstruct.config(validate='key', validatecommand=(self.e_yearconstruct.register(lambda inp: self.character_limit(inp, 4)), "%P"))
         self.value_naturemana = tk.StringVar(None, "VN")
-        b_sell = tk.Radiobutton(self, text="Vente", variable=self.value_naturemana, value='Vente')
+        b_sell = tk.Radiobutton(self, text="Vente", variable=self.value_naturemana, value='Vente',highlightthickness=0)
         b_location = tk.Radiobutton(self, text="Location", variable=self.value_naturemana, value='Location')
         tk.Label(self, text="Date de mise en marche").grid(row=12, column=1)
         self.cal = DateEntry(self, selectmode='day', date_pattern='dd/mm/yyyy')
@@ -675,7 +705,7 @@ class PageMain(Page):
 class MainView(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1490, bd=0, highlightthickness=0, relief="ridge")
+        self.canvas = Canvas(self, bg="#FFFFFF", height=770, width=1450, bd=0, highlightthickness=0, relief="ridge")
         self.canvas.place(x=0, y=0)
 
         self.p_main = PageMain(self)
@@ -691,23 +721,23 @@ class MainView(tk.Frame):
             outline="")
 
         self.canvas.create_rectangle(0, 0, 489, 119, fill="#219653", outline="", tags="rec_main")
-        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Lobster", '20'), tags="rec_main")
+        self.canvas.create_text(230.00, 55.00, text="Accueil", font=("Ink Free", '22'), tags="rec_main")
         self.canvas.tag_bind("rec_main", "<Button-1>", self.show_main)
 
         self.canvas.create_rectangle(489, 0, 970, 119, fill="#27AE60", outline="", tags="rec_save")
-        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Lobster", '20'), tags="rec_save")
+        self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Ink Free", '22'), tags="rec_save")
         self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
 
         self.canvas.create_rectangle(970, 0, 1450, 119, fill="#6FCF97", outline="", tags="rec_research")
-        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Lobster", '20'), tags="rec_research")
+        self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Ink Free", '22'), tags="rec_research")
         self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
 
-        self.canvas.create_text(695.00, 450.00, text="Bienvenue sur votre logiciel de gestion de bien",
-                                font=('Lobster', '30'))
+        self.canvas.create_text(655.00, 450.00, text="Bienvenue sur votre logiciel de gestion de bien",
+                                font=('Ink Free', '30'))
 
     def show_main(self, event= None):
-        self.p_main.pack(side="top", fill="both", expand=True)
-        self.p_research.pack_forget()
+        PageMain(self).pack(side="top", fill="both", expand=True)
+        PageResearch(self).pack_forget()
         self.p_save.pack_forget()
 
     def show_research(self, event= None):
