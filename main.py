@@ -63,21 +63,21 @@ class PageResearch(Page):
 
         self.canvas.place(x=0, y=0)
 
-        #Charge img
+        #Charge img         
         self.img_house = Image.open(
-            "C:/Cours/Python/Projet Python/gestion_bien_immobilier-master/house.jpg")
+            "../gestion_bien_immobilier-master/house.jpg")
         self.img_house = self.img_house.resize((239, 150), Image.ANTIALIAS)
         self.img_house = ImageTk.PhotoImage(self.img_house)
 
         self.img_building = Image.open(
-            "C:/Cours/Python/Projet Python/gestion_bien_immobilier-master/building.jpg")
+            "../gestion_bien_immobilier-master/building.jpg")
         self.img_building = self.img_building.resize((239, 150), Image.ANTIALIAS)
         self.img_building = ImageTk.PhotoImage(self.img_building)
 
         self.canvas.create_rectangle(
             0.0,
             28.0,
-            1440.0,  # PARTI COULEUR DU CORPS DU TEXTE
+            1450.0,  # PARTI COULEUR DU CORPS DU TEXTE
             1052.0,
             fill="#6FCF97",
             outline="")
@@ -90,7 +90,7 @@ class PageResearch(Page):
         self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Ink Free", '22'), tags="rec_save")
         # self.canvas.tag_bind("rec_save", "<Button-1>", self.show_save)
 
-        self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
+        self.canvas.create_rectangle(960, 0, 1450, 119, fill="#6FCF97", outline="", tags="rec_research")
         self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Ink Free", '22'), tags="rec_research")
         # self.canvas.tag_bind("rec_research", "<Button-1>", self.show_research)
 
@@ -103,7 +103,12 @@ class PageResearch(Page):
         self.result = curseur.fetchall()
         self.list_disdata = []
 
-        j = 1
+        if len(self.result) == 0:
+            self.notresult = self.canvas.create_text(530, 220, text="Aucun Résultat",
+                                                      font=("Lobster", '36'))
+            self.list_disdata.append(self.notresult)
+        else:
+            j = 1
         b_rec = 150
         d_rec = 430
         a_rec = 300
@@ -284,15 +289,20 @@ bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
         curseur = conn_r.cursor()
         curseur.execute("SELECT * FROM T_GESTIONIMMO")
         self.result = curseur.fetchall()
-
-        j = 1
+        
+        if len(self.result) == 0:
+            self.notresult = self.canvas.create_text(530, 220, text="Aucun Résultat",
+                                                      font=("Lobster", '36'))
+            self.list_disdata.append(self.notresult)
+        else:
+            j = 1
         b_rec = 150
         d_rec = 430
-        a_rec = 360
-        c_rec = 600
-        img_x = 480
+        a_rec = 300
+        c_rec = 540
+        img_x = 420
         img_y = 226
-        txt_x = 540
+        txt_x = 480
         txt_y = 410
         nb_row = 1
         for tuple_bien in self.result:
@@ -301,21 +311,13 @@ bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
                 self.l_img = self.canvas.create_image(img_x, img_y, image=self.img_house)
             elif tuple_bien[1] == "Appartement":
                 self.l_img = self.canvas.create_image(img_x, img_y, image=self.img_building)
-            self.l_bien = self.canvas.create_text(txt_x - 125, txt_y - 90, text=tuple_bien[j],
-                                                  font=("Lobster", '12'))  # L1
-            self.l_commune = self.canvas.create_text(txt_x, txt_y - 90, text=tuple_bien[j + 6],
-                                                     font=("Lobster", '12'))  # L1
-            self.l_areacouv = self.canvas.create_text(txt_x - 140, txt_y - 60, text=tuple_bien[j + 7],
-                                                      font=("Lobster", '12'))  # L2
-            self.l_piece = self.canvas.create_text(txt_x, txt_y - 60, text=tuple_bien[j + 9],
-                                                   font=("Lobster", '12'))  # L2
-            self.l_cenergetique = self.canvas.create_text(txt_x - 128, txt_y - 30,
-                                                          text="Classe E. : " + tuple_bien[j + 10],
-                                                          font=("Lobster", '12'))  # L3
-            self.l_anneeconstruct = self.canvas.create_text(txt_x, txt_y - 30, text=tuple_bien[j + 11],
-                                                            font=("Lobster", '12'))  # L3
-            self.l_natureimmo = self.canvas.create_text(txt_x - 138, txt_y, text=tuple_bien[j + 1],
-                                                        font=("Lobster", '12'))  # L4
+            self.l_bien = self.canvas.create_text(txt_x-125, txt_y-90, text=tuple_bien[j], font=("Lobster", '12'))  # L1
+            self.l_commune = self.canvas.create_text(txt_x, txt_y-90, text=tuple_bien[j + 6], font=("Lobster", '12'))  # L1
+            self.l_areacouv = self.canvas.create_text(txt_x-140, txt_y-60, text=tuple_bien[j + 7], font=("Lobster", '12'))  # L2
+            self.l_piece = self.canvas.create_text(txt_x, txt_y-60, text=tuple_bien[j + 9], font=("Lobster", '12'))  # L2
+            self.l_cenergetique = self.canvas.create_text(txt_x-128, txt_y-30, text="Classe E. : "+ tuple_bien[j + 10], font=("Lobster", '12'))  # L3
+            self.l_anneeconstruct = self.canvas.create_text(txt_x, txt_y-30, text=tuple_bien[j + 11], font=("Lobster", '12'))  # L3
+            self.l_natureimmo = self.canvas.create_text(txt_x-138, txt_y, text=tuple_bien[j + 1], font=("Lobster", '12'))  # L4
             self.l_prix = self.canvas.create_text(txt_x, txt_y, text=tuple_bien[j + 13], font=("Lobster", '12'))  # L4
             a_rec += 270
             c_rec += 270
@@ -324,19 +326,19 @@ bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
             if nb_row == 4:
                 b_rec += 310
                 d_rec += 310
-                img_x = 480
+                img_x = 420
                 img_y += 310
-                txt_x = 540
+                txt_x = 480
                 txt_y += 310
-                a_rec = 360
-                c_rec = 600
+                a_rec = 300
+                c_rec = 540
                 nb_row = 1
             else:
                 nb_row += 1
 
             for col in range(10):
                 list_label = eval(
-                    f"self.l_{['rec', 'img', 'bien', 'natureimmo', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix', ][col]}")
+                    f"self.l_{['rec','img','bien', 'natureimmo', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix',][col]}")
                 self.list_disdata.append(list_label)
         conn_r.close()
 
@@ -409,58 +411,50 @@ bg='#5EBD85',activebackground='#5EBD85',font=('Arial', 13))
             self.list_disdata.append(self.notresult)
         else:
             j = 1
-            b_rec = 150
-            d_rec = 430
-            a_rec = 360
-            c_rec = 600
-            img_x = 480
-            img_y = 226
-            txt_x = 540
-            txt_y = 410
-            nb_row = 1
-            for tuple_bien in self.result:
-                self.l_rec = self.canvas.create_rectangle(a_rec, b_rec, c_rec, d_rec, fill="")
-                if tuple_bien[1] == "Maison":
-                    self.l_img = self.canvas.create_image(img_x, img_y, image=self.img_house)
-                elif tuple_bien[1] == "Appartement":
-                    self.l_img = self.canvas.create_image(img_x, img_y, image=self.img_building)
-                self.l_bien = self.canvas.create_text(txt_x - 125, txt_y - 90, text=tuple_bien[j],
-                                                      font=("Lobster", '12'))  # L1
-                self.l_commune = self.canvas.create_text(txt_x, txt_y - 90, text=tuple_bien[j + 6],
-                                                         font=("Lobster", '12'))  # L1
-                self.l_areacouv = self.canvas.create_text(txt_x - 140, txt_y - 60, text=tuple_bien[j + 7],
-                                                          font=("Lobster", '12'))  # L2
-                self.l_piece = self.canvas.create_text(txt_x, txt_y - 60, text=tuple_bien[j + 9],
-                                                       font=("Lobster", '12'))  # L2
-                self.l_cenergetique = self.canvas.create_text(txt_x - 128, txt_y - 30,
-                                                              text="Classe E. : " + tuple_bien[j + 10],
-                                                              font=("Lobster", '12'))  # L3
-                self.l_anneeconstruct = self.canvas.create_text(txt_x, txt_y - 30, text=tuple_bien[j + 11],
-                                                                font=("Lobster", '12'))  # L3
-                self.l_natureimmo = self.canvas.create_text(txt_x - 138, txt_y, text=tuple_bien[j + 1],
-                                                            font=("Lobster", '12'))  # L4
-                self.l_prix = self.canvas.create_text(txt_x, txt_y, text=tuple_bien[j + 13],
-                                                      font=("Lobster", '12'))  # L4
-                a_rec += 270
-                c_rec += 270
-                img_x += 270
-                txt_x += 270
-                if nb_row == 4:
-                    b_rec += 310
-                    d_rec += 310
-                    img_x = 480
-                    img_y += 310
-                    txt_x = 540
-                    txt_y += 310
-                    a_rec = 360
-                    c_rec = 600
-                    nb_row = 1
-                else:
-                    nb_row += 1
-                for col in range(10):
-                    list_label = eval(
-                        f"self.l_{['rec', 'img', 'bien', 'natureimmo', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix', ][col]}")
-                    self.list_disdata.append(list_label)
+        b_rec = 150
+        d_rec = 430
+        a_rec = 300
+        c_rec = 540
+        img_x = 420
+        img_y = 226
+        txt_x = 480
+        txt_y = 410
+        nb_row = 1
+        for tuple_bien in self.result:
+            self.l_rec = self.canvas.create_rectangle(a_rec, b_rec, c_rec, d_rec, fill="")
+            if tuple_bien[1] == "Maison":
+                self.l_img = self.canvas.create_image(img_x, img_y, image=self.img_house)
+            elif tuple_bien[1] == "Appartement":
+                self.l_img = self.canvas.create_image(img_x, img_y, image=self.img_building)
+            self.l_bien = self.canvas.create_text(txt_x-125, txt_y-90, text=tuple_bien[j], font=("Lobster", '12'))  # L1
+            self.l_commune = self.canvas.create_text(txt_x, txt_y-90, text=tuple_bien[j + 6], font=("Lobster", '12'))  # L1
+            self.l_areacouv = self.canvas.create_text(txt_x-140, txt_y-60, text=tuple_bien[j + 7], font=("Lobster", '12'))  # L2
+            self.l_piece = self.canvas.create_text(txt_x, txt_y-60, text=tuple_bien[j + 9], font=("Lobster", '12'))  # L2
+            self.l_cenergetique = self.canvas.create_text(txt_x-128, txt_y-30, text="Classe E. : "+ tuple_bien[j + 10], font=("Lobster", '12'))  # L3
+            self.l_anneeconstruct = self.canvas.create_text(txt_x, txt_y-30, text=tuple_bien[j + 11], font=("Lobster", '12'))  # L3
+            self.l_natureimmo = self.canvas.create_text(txt_x-138, txt_y, text=tuple_bien[j + 1], font=("Lobster", '12'))  # L4
+            self.l_prix = self.canvas.create_text(txt_x, txt_y, text=tuple_bien[j + 13], font=("Lobster", '12'))  # L4
+            a_rec += 270
+            c_rec += 270
+            img_x += 270
+            txt_x += 270
+            if nb_row == 4:
+                b_rec += 310
+                d_rec += 310
+                img_x = 420
+                img_y += 310
+                txt_x = 480
+                txt_y += 310
+                a_rec = 300
+                c_rec = 540
+                nb_row = 1
+            else:
+                nb_row += 1
+
+            for col in range(10):
+                list_label = eval(
+                    f"self.l_{['rec','img','bien', 'natureimmo', 'commune', 'areacouv', 'piece', 'cenergetique', 'anneeconstruct', 'prix',][col]}")
+                self.list_disdata.append(list_label)
         conn_r.close()
 
     def reset_allentry(self, event_resetentry, txt):
@@ -491,7 +485,7 @@ class PageSave(Page):
         self.canvas.create_rectangle(
             0.0,
             28.0,
-            1440.0,  # PARTI COULEUR DU CORPS
+            1450.0,  # PARTIE COULEUR DU CORPS
             1052.0,
             fill="#27AE60",
             outline="")
@@ -505,77 +499,76 @@ class PageSave(Page):
         self.canvas.create_text(715.00, 55.00, text="Enregistrement de bien", font=("Ink Free", '22'), tags="rec_save")
         self.canvas.tag_bind("rec_save", "<Button-1>", MainView.show_save)
 
-        self.canvas.create_rectangle(960, 0, 1440, 119, fill="#6FCF97", outline="", tags="rec_research")
+        self.canvas.create_rectangle(960, 0, 1450, 119, fill="#6FCF97", outline="", tags="rec_research")
         self.canvas.create_text(1200, 55, text="Recherche de bien", font=("Ink Free", '22'), tags="rec_research")
         self.canvas.tag_bind("rec_research", "<Button-1>", MainView.show_research)
 
         self.value_bien = tk.StringVar(None, "VB")
         b_appart = tk.Radiobutton(self, text="Appartement", variable=self.value_bien, value='Appartement',
-                                  command=self.disableEntryAreaGarden)
+                                  command=self.disableEntryAreaGarden,bg='#27ae60',activebackground='#27ae60',font=('Arial', 13)).place(x=600,y=220)
         b_house = tk.Radiobutton(self, text="Maison", variable=self.value_bien, value='Maison',
-                                 command=self.enableEntryAreaGarden)
-        tk.Label(self, text="N°").grid(row=1, column=1)
-        self.e_no = tk.Entry(self, bd=5)
+                                 command=self.enableEntryAreaGarden,bg='#27ae60',activebackground='#27ae60',font=('Arial', 13)).place(x=750,y=220)
+        tk.Label(self, text="N° :", font=('Arial', 11), fg="black", bg='#27ae60').place(x=570,y=260)
+        self.e_no = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_no.config(validate='key', validatecommand=(self.e_no.register(lambda inp: self.character_limit(inp, 5)), "%P"))
 
-        tk.Label(self, text="Type de voie : ").grid(row=2, column=1)
+        tk.Label(self, text="Type de voie : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=503,y=290)
         self.liste_typewall = ["Rue", "Impasse", "Avenue", "Boulevard", "Allée", "Place"]
         self.listCombo = ttk.Combobox(self, values=self.liste_typewall, state="readonly")
-        self.listCombo.grid(row=2, column=2)
+        self.listCombo.place(y=292,x=650)
 
-        tk.Label(self, text="Nom de rue : ").grid(row=3, column=1)
-        self.e_namewall = tk.Entry(self, bd=5)
+        tk.Label(self, text="Nom de rue : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=508,y=320)
+        self.e_namewall = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_namewall.config(validate='key', validatecommand=(self.e_namewall.register(lambda inp_str: self.character_limit_str(inp_str, 100)), "%P"))
-        tk.Label(self, text="Code Postale : ").grid(row=4, column=1)
-        self.e_postalecode = tk.Entry(self, bd=5)
+        tk.Label(self, text="Code Postale : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=496,y=350)
+        self.e_postalecode = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_postalecode.config(validate='key', validatecommand=(self.e_postalecode.register(lambda inp: self.character_limit(inp, 5)), "%P"))
-        tk.Label(self, text="Commune :").grid(row=5, column=1)
-        self.e_common = tk.Entry(self, bd=5)
+        tk.Label(self, text="Commune :", font=('Arial', 11), fg="black", bg='#27ae60').place(x=514,y=380)
+        self.e_common = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_common.config(validate='key', validatecommand=(self.e_common.register(lambda inp_str: self.character_limit_str(inp_str, 40)), "%P"))
-        tk.Label(self, text="Superficie couvert : ").grid(row=6, column=1)
-        self.e_areacovered = tk.Entry(self, bd=5)
+        tk.Label(self, text="Superficie couvert : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=465,y=410)
+        self.e_areacovered = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_areacovered.config(validate='key', validatecommand=(self.e_areacovered.register(lambda inp: self.character_limit(inp, 5)), "%P"))
-        tk.Label(self, text="Superficie jardin : ").grid(row=7, column=1)
-        self.e_areagarden = tk.Entry(self, bd=5)
+        tk.Label(self, text="Superficie jardin : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=477,y=440)
+        self.e_areagarden = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_areagarden.config(validate='key', validatecommand=(self.e_areagarden.register(lambda inp: self.character_limit(inp, 5)), "%P"))
-        tk.Label(self, text="Nombre de pièce : ").grid(row=8, column=1)
-        self.e_numroom = tk.Entry(self, bd=5)
+        tk.Label(self, text="Nombre de pièce : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=470,y=470)
+        self.e_numroom = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_numroom.config(validate='key', validatecommand=(self.e_numroom.register(lambda inp: self.character_limit(inp, 3)), "%P"))
-        tk.Label(self, text="Classe énergétique : ").grid(row=9, column=1)
+        tk.Label(self, text="Classe énergétique : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=455,y=500)
         self.liste_typeenergie = ["", "A", "B", "C", "D", "E", "F", "G"]
         self.listComboEnergy = ttk.Combobox(self, values=self.liste_typeenergie, state="readonly")
 
 
-        tk.Label(self, text="Année de construction : ").grid(row=10, column=1)
-        self.e_yearconstruct = tk.Entry(self, bd=5)
+        tk.Label(self, text="Année de construction : ", font=('Arial', 11), fg="black", bg='#27ae60').place(x=436,y=530)
+        self.e_yearconstruct = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_yearconstruct.config(validate='key', validatecommand=(self.e_yearconstruct.register(lambda inp: self.character_limit(inp, 4)), "%P"))
         self.value_naturemana = tk.StringVar(None, "VN")
-        b_sell = tk.Radiobutton(self, text="Vente", variable=self.value_naturemana, value='Vente',highlightthickness=0)
-        b_location = tk.Radiobutton(self, text="Location", variable=self.value_naturemana, value='Location')
-        tk.Label(self, text="Date de mise en marche").grid(row=12, column=1)
+        b_sell = tk.Radiobutton(self, text="Vente", variable=self.value_naturemana, value='Vente',highlightthickness=0,bg='#27ae60',activebackground='#27ae60',font=('Arial', 13))
+        b_location = tk.Radiobutton(self, text="Location", variable=self.value_naturemana, value='Location',bg='#27ae60',activebackground='#27ae60',font=('Arial', 13))
+        tk.Label(self, text="Date de mise en marche :", font=('Arial', 11), fg="black", bg='#27ae60').place(x=420,y=560)
         self.cal = DateEntry(self, selectmode='day', date_pattern='dd/mm/yyyy')
-        tk.Label(self, text="Prix").grid(row=13, column=1)
-        self.e_price = tk.Entry(self, bd=5)
+        tk.Label(self, text="Prix :", font=('Arial', 11), fg="black", bg='#27ae60').place(x=556,y=590)
+        self.e_price = tk.Entry(self, bd=3,font=('Arial', 11),width=29,fg="gray")
         self.e_price.config(validate='key', validatecommand=(self.e_price.register(lambda inp: self.character_limit(inp, 8)), "%P"))
 
-        b_appart.grid(row=0, column=1, sticky=tk.NS)
-        b_house.grid(row=0, column=2, sticky=tk.NS)
+        
         self.value_bien.set("VB")
-        self.e_no.grid(row=1, column=2)
-        self.e_namewall.grid(row=3, column=2)
-        self.e_postalecode.grid(row=4, column=2)
-        self.e_common.grid(row=5, column=2)
-        self.e_areacovered.grid(row=6, column=2)
-        self.e_areagarden.grid(row=7, column=2)
-        self.e_numroom.grid(row=8, column=2)
-        self.listComboEnergy.grid(row=9, column=2)
-        self.e_yearconstruct.grid(row=10, column=2)
-        b_sell.grid(row=11, column=1)
-        b_location.grid(row=11, column=2)
+        self.e_no.place(y=258,x=600)
+        self.e_namewall.place(y=318,x=600)
+        self.e_postalecode.place(y=348,x=600)
+        self.e_common.place(y=378,x=600)
+        self.e_areacovered.place(y=408,x=600)
+        self.e_areagarden.place(y=438,x=600)
+        self.e_numroom.place(y=468,x=600)
+        self.listComboEnergy.place(y=501,x=650  )
+        self.e_yearconstruct.place(y=528,x=600)
+        b_sell.place(x=600,y=180)
+        b_location.place(x=750,y=180)
         self.value_bien.set("VN")
-        self.cal.grid(row=12, column=2, padx=15)
-        self.e_price.grid(row=13, column=2)
-        tk.Button(self, text="Enregistrer", command=self.save_data).grid(row=14, column=2)
+        self.cal.place(y=562,x=675)
+        self.e_price.place(y=588,x=600)
+        tk.Button(self, text="Enregistrer", command=self.save_data).place(y=628,x=677,height=45,width=90)
 
     def save_data(self):
         db = sqlite3.connect('gestion_immo.db')
